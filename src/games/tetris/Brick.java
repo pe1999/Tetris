@@ -24,6 +24,7 @@ public class Brick {
     }
 
     boolean rotateRight() {
+
         return true;
     }
 
