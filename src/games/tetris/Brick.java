@@ -43,6 +43,7 @@ public class Brick {
     }
 
     boolean isFree() {
+
         return true;
     }
 }
