@@ -20,6 +20,7 @@ public class Brick {
     }
 
     boolean rotateLeft() {
+
         return true;
     }
 
