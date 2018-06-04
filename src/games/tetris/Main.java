@@ -8,9 +8,11 @@ public class Main extends JFrame {
 
     private static final int POS_X = 600;
     private static final int POS_Y = 200;
-    private static final int WINDOW_WIDTH = 800;
-    private static final int WINDOW_HEIGHT = 600;
+    private static final int WINDOW_WIDTH = 300;
+    private static final int WINDOW_HEIGHT = 500;
 
+    Tetris tetris;
+    GamePanel gamePanel;
 
 
     public static void main(String[] args) {
@@ -28,8 +30,14 @@ public class Main extends JFrame {
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setResizable(false);
         setTitle("Tetris");
-        add(new GamePanel(new Tetris()));
+        tetris = new Tetris();
+        gamePanel = new GamePanel(tetris);
+        setLayout(null);
+        gamePanel.setSize(200, 400);
+        gamePanel.setLocation(0, 0);
+        add(gamePanel);
 
         setVisible(true);
+        System.out.println(getHeight());
     }
 }

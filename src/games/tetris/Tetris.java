@@ -7,8 +7,12 @@ import java.awt.*;
 
 public class Tetris extends Game {
 
-    Tetris() {
+    Glass glass;
+    Brick brick;
 
+    Tetris() {
+        glass = new Glass();
+        brick = new Brick();
     }
 
     @Override
@@ -18,7 +22,9 @@ public class Tetris extends Game {
 
     @Override
     public void onDrawComponent(GamePanel gamePanel, Graphics g) {
-        super.onDrawComponent(gamePanel, g);
+        //super.onDrawComponent(gamePanel, g);
         gamePanel.setBackground(new Color(0));
+        glass.render(gamePanel, g);
+        brick.render(gamePanel, g);
     }
 }

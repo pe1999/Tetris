@@ -1,5 +1,9 @@
 package games.tetris;
 
+import games.GamePanel;
+
+import java.awt.*;
+
 public class Brick {
     int[][][] figures = {{{1, 0}, {1, 1}, {1, 2}, {1, 3}},
                          {{1, 0}, {1, 1}, {1, 2}, {2, 2}},
@@ -74,4 +78,12 @@ public class Brick {
 
         return true;
     }
+    void render(GamePanel gamePanel, Graphics g) {
+        for (int i = 0; i < 4; i++) {
+            g.setColor(new Color(255 + 255*256 + 255*256*256));
+            g.fillRect(10 * (X_POS + figure[i][0]) + 1, 10*(Y_POS + figure[i][1])+1, 8,8);
+
+        }
+    }
+
 }
