@@ -1,5 +1,7 @@
 package games.tetris;
 
+import games.GamePanel;
+
 import javax.swing.*;
 
 public class Main extends JFrame {
@@ -26,6 +28,8 @@ public class Main extends JFrame {
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setResizable(false);
         setTitle("Tetris");
+        add(new GamePanel(new Tetris()));
 
+        setVisible(true);
     }
 }
