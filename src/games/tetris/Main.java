@@ -30,14 +30,18 @@ public class Main extends JFrame {
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setResizable(false);
         setTitle("Tetris");
-        tetris = new Tetris();
+        tetris = new Tetris(this);
         gamePanel = new GamePanel(tetris);
+        tetris.setGamePanel(gamePanel);
         setLayout(null);
         gamePanel.setSize(200, 400);
         gamePanel.setLocation(0, 0);
         add(gamePanel);
 
         setVisible(true);
-        System.out.println(getHeight());
+
+        gamePanel.requestFocus();
+        tetris.start();
+        //System.out.println(getHeight());
     }
 }
