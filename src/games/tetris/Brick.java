@@ -6,10 +6,15 @@ import games.Sprite;
 import java.awt.*;
 
 public class Brick extends Sprite {
-    int[][][] figures = {{{1, 0}, {1, 1}, {1, 2}, {1, 3}},
-            {{1, 0}, {1, 1}, {1, 2}, {2, 2}},
-            {{2, 0}, {2, 1}, {2, 2}, {1, 2}},
-            {{1, 1}, {0, 2}, {1, 2}, {2, 2}}};
+    int[][][] figures = {
+            {{1, 0}, {1, 1}, {1, 2}, {1, 3}}, // I - brick
+            {{1, 0}, {1, 1}, {1, 2}, {2, 2}}, // L - brick
+            {{2, 0}, {2, 1}, {2, 2}, {1, 2}}, // Mirrored L - brick
+            {{1, 1}, {0, 2}, {1, 2}, {2, 2}}, // T - brick
+            {{1, 0}, {1, 1}, {2, 1}, {2, 2}}, // S - brick
+            {{2, 0}, {2, 1}, {1, 1}, {1, 2}}, // Z - brick
+            {{1, 1}, {2, 1}, {1, 2}, {2, 2}}  // Square - brick
+    };
 
     int[][] figure = new int[4][2];
     int[][] tmpFigure = new int[4][2];
@@ -34,27 +39,10 @@ public class Brick extends Sprite {
         return chkFigure(figure);
     }
 
-    /**
-     * boolean rotateLeft() {
-     * for (int i = 0; i < 4; i++) {
-     * tmpFigure[i][0] = figure[i][1];
-     * tmpFigure[i][1] = 3 - figure[i][0];
-     * }
-     * if(chkFigure()) {
-     * for (int i = 0; i < 4; i++) {
-     * figure[i][0] = tmpFigure[i][0];
-     * figure[i][1] = tmpFigure[i][1];
-     * }
-     * return true;
-     * }
-     * return false;
-     * }
-     */
-
-    boolean rotateRight() {
+    boolean rotate() {
         for(int i = 0; i < 4; i++) {
-            tmpFigure[i][0] = 3 - figure[i][1];
-            tmpFigure[i][1] = figure[i][0];
+            tmpFigure[i][0] = figure[i][1];
+            tmpFigure[i][1] = 3 - figure[i][0];
         }
         if(chkFigure(tmpFigure)) {
             for(int i = 0; i < 4; i++) {

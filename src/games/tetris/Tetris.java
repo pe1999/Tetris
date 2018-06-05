@@ -15,6 +15,9 @@ public class Tetris extends Game implements KeyListener {
     Glass glass;
     Brick brick;
 
+    int delay;
+    int currentDelay;
+
     private final Random random = new Random();
 
 
@@ -26,18 +29,34 @@ public class Tetris extends Game implements KeyListener {
 
     @Override
     public void run() {
-        //super.run();
+
+        int lines;
+        int summDelaySpeps = 0;
+        int delayStep = 10;
+
         gameOver = false;
+        score = 0;
+        delay = 1000;
+        currentDelay = delay;
+
         while (true) {
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            do {
+                try {
+                    sleep(delayStep);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                summDelaySpeps += delayStep;
+            } while(summDelaySpeps < currentDelay);
+            summDelaySpeps = 0;
             if(!brick.moveDown()) {
                 brick.putToGlass();
-                System.out.println(glass.checkAndDelLines());
-                if(!brick.newBrick(random.nextInt(4))) {
+                lines = glass.checkAndDelLines();
+                score += ((lines + 1) * 2 - 2) * 100;
+                delay -= 10;
+                currentDelay = delay;
+//                main.setTitle("Tetris. Score = " + score);
+                if(!brick.newBrick(random.nextInt(7))) {
                     gameOver = true;
                     break;
                 }
@@ -45,7 +64,7 @@ public class Tetris extends Game implements KeyListener {
             gamePanel.repaint();
         }
         gamePanel.repaint();
-        main.requestFocus();
+        main.showRestartButton();
     }
 
     @Override
@@ -56,23 +75,17 @@ public class Tetris extends Game implements KeyListener {
 
     @Override
     public void onDrawComponent(GamePanel gamePanel, Graphics g) {
-        //super.onDrawComponent(gamePanel, g);
         gamePanel.setBackground(new Color(0));
         glass.render(gamePanel, g);
-        if(!gameOver) {
-            brick.render(gamePanel, g);
-        }
-        else {
-            g.setColor(new Color(255 + 255 * 256 + 255 * 256 * 256));
+        if(main.isRestartGame()) brick.render(gamePanel, g);
+        if(gameOver) {
+            g.setColor(Color.RED);
             g.drawString("Game over", 10, 150);
-            g.fillRect(10, 150, 20, 20);
         }
-        //System.out.println("In onDrawComponent");
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        //System.out.println("In KeyTyped");
     }
 
     @Override
@@ -86,10 +99,13 @@ public class Tetris extends Game implements KeyListener {
                 brick.moveRight();
                 break;
             case KeyEvent.VK_UP:
-                brick.rotateRight();
+                brick.rotate();
                 break;
             case KeyEvent.VK_DOWN:
                 brick.moveDown();
+                break;
+            case KeyEvent.VK_SPACE:
+                currentDelay = 50;
                 break;
         }
         gamePanel.repaint();
@@ -97,6 +113,5 @@ public class Tetris extends Game implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        //System.out.println("In Key Released");
     }
 }
