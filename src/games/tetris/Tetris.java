@@ -10,18 +10,27 @@ import java.util.Random;
 
 public class Tetris extends Game implements KeyListener {
 
-    public static final int CELL_SIZE = 20;
-    public static final int GLASS_WIDTH = 10;
-    public static final int GLASS_HEIGHT = 20;
+    static final int CELL_SIZE = 20;
+    static final int CELL_BORDER_SIZE = 1;
+    static final int GLASS_WIDTH = 10;
+    static final int GLASS_HEIGHT = 20;
 
     static {
         GAME_PANEL_WIDTH = GLASS_WIDTH * CELL_SIZE;
         GAME_PANEL_HEIGHT = GLASS_HEIGHT * CELL_SIZE;
     }
 
-    public static final int START_DELAY = 1000;
-    public static final int DELAY_STEP = 10;
+    private static final Color BACKGROUND_COLOR = Color.BLACK;
+    static final Color TETRIS_COLOR = Color.RED;
 
+    static final int INITIAL_BRICK_X_POS = (GLASS_WIDTH - Brick.BRICK_SIZE) / 2; // = 3
+    static final int INITIAL_BRICK_Y_POS = 0;
+
+    private static final int START_DELAY = 1000;
+    private static final int DROP_DELAY = 30;
+    private static final int DELAY_STEP = 10;
+
+    private static final boolean SHOW_NEXT_BRICK = false;
 
     private Main main;
 
@@ -29,6 +38,7 @@ public class Tetris extends Game implements KeyListener {
     private Brick brick;
 
     private int currentDelay;
+    private int nextBrick;
 
     private static final Random random = new Random();
 
@@ -37,13 +47,14 @@ public class Tetris extends Game implements KeyListener {
         this.glass = new Glass();
         this.brick = new Brick(glass);
         brick.newBrick(random.nextInt(Brick.BRICKS));
+        nextBrick = random.nextInt(Brick.BRICKS);
     }
 
     @Override
     public void run() {
 
         int lines;
-        int summDelaySpeps = 0;
+        int summDelaySteps = 0;
 
         gameOver = false;
         score = 0;
@@ -55,24 +66,25 @@ public class Tetris extends Game implements KeyListener {
                 try {
                     sleep(DELAY_STEP);
                 } catch (InterruptedException e) {
-                    new RuntimeException(e);
+                    throw new RuntimeException(e);
                     //e.printStackTrace();
                 }
-                summDelaySpeps += DELAY_STEP;
-            } while(summDelaySpeps < currentDelay);
-            summDelaySpeps = 0;
+                summDelaySteps += DELAY_STEP;
+            } while(summDelaySteps < currentDelay);
+            summDelaySteps = 0;
             if(!brick.moveDown()) {
                 brick.putToGlass();
                 lines = glass.checkAndDelLines();
                 score += ((lines + 1) * 2 - 2) * 100;
                 if(lines != 0) delay *= 0.98;
                 currentDelay = delay;
-                if(!brick.newBrick(random.nextInt(Brick.BRICKS))) {
+                if(!brick.newBrick(nextBrick)) {
                     gameOver = true;
                     if(highScore < score)
                         highScore = score;
                     break;
                 }
+                nextBrick = random.nextInt(Brick.BRICKS);
             }
             gamePanel.repaint();
         }
@@ -88,12 +100,17 @@ public class Tetris extends Game implements KeyListener {
 
     @Override
     public void onDrawComponent(GamePanel gamePanel, Graphics g) {
-        gamePanel.setBackground(new Color(0));
+        gamePanel.setBackground(BACKGROUND_COLOR);
         glass.render(gamePanel, g);
-        if(main.isRestartGame())
+        if(main.isRestartGame()) {
             brick.render(gamePanel, g);
+            if(SHOW_NEXT_BRICK) brick.renderNext(gamePanel, g, nextBrick);
+            g.setColor(TETRIS_COLOR);
+            g.drawString("Score: " + score, 2, 12);
+        }
         if(gameOver) {
-            g.setColor(Color.RED);
+            g.setColor(TETRIS_COLOR);
+            g.drawString("Highscore: " + highScore, 2, 24);
             g.drawString("Game over", 10, 150);
         }
     }
@@ -118,7 +135,7 @@ public class Tetris extends Game implements KeyListener {
                 brick.moveDown();
                 break;
             case KeyEvent.VK_SPACE:
-                currentDelay = 50;
+                currentDelay = DROP_DELAY;
                 break;
         }
         gamePanel.repaint();

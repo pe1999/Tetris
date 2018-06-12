@@ -7,14 +7,14 @@ import java.awt.*;
 
 public class Glass extends Sprite {
 
-    private int[][] glass = new int[Tetris.GLASS_HEIGHT][Tetris.GLASS_WIDTH];
+    private final int[][] glass = new int[Tetris.GLASS_HEIGHT][Tetris.GLASS_WIDTH];
 
     @Override
     public void render(GamePanel gamePanel, Graphics g) {
-        g.setColor(Color.WHITE);
         for(int i = 0; i < Tetris.GLASS_HEIGHT; i++) {
             for(int j = 0; j < Tetris.GLASS_WIDTH; j++) {
-                if(glass[i][j] != 0) g.fillRect(20 * j + 1, 20 * i + 1, 18, 18);
+                if(glass[i][j] != 0)
+                    Cell.draw(g, j, i, glass[i][j]);
             }
         }
     }
@@ -23,8 +23,8 @@ public class Glass extends Sprite {
         return (x >= 0) && (x < Tetris.GLASS_WIDTH) && (y >= 0) && (y < Tetris.GLASS_HEIGHT) && (glass[y][x] == 0);
     }
 
-    void put(int x, int y, int cellType) {
-        glass[y][x] = cellType;
+    void put(int x, int y, int cellColor) {
+        glass[y][x] = cellColor;
     }
 
     int checkAndDelLines() {

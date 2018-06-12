@@ -7,7 +7,7 @@ public class Game extends Thread {
     protected GamePanel gamePanel;
     protected boolean gameOver;
     protected int score;
-    protected int highScore;
+    protected static int highScore;
 
     public static int GAME_PANEL_WIDTH;
     public static int GAME_PANEL_HEIGHT;

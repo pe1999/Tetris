@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Main extends JFrame implements ActionListener {
+class Main extends JFrame implements ActionListener {
 
     private static final String GAME_TITLE = "Tetris";
 
@@ -18,6 +18,8 @@ public class Main extends JFrame implements ActionListener {
     private final JButton startRestart;
     private static final int START_RESTART_BTN_WIDTH = 100;
     private static final int START_RESTART_BTN_HEIGHT = 50;
+    private static final String START_RESTART_BTN_START_LABEL = "Start";
+    private static final String START_RESTART_BTN_RESTART_LABEL = "Retart";
 
     private boolean restartGame = false;
 
@@ -40,7 +42,7 @@ public class Main extends JFrame implements ActionListener {
         setResizable(false);
         setTitle(GAME_TITLE);
 
-        startRestart = new JButton("Start");
+        startRestart = new JButton(START_RESTART_BTN_START_LABEL);
         startRestart.addActionListener(this);
 
         initGame();
@@ -52,7 +54,7 @@ public class Main extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         startRestart.setVisible(false);
-        startRestart.setText("Restart");
+        startRestart.setText(START_RESTART_BTN_RESTART_LABEL);
         if (!restartGame) {
             restartGame = true;
         } else {
@@ -74,10 +76,10 @@ public class Main extends JFrame implements ActionListener {
         gamePanel = new GamePanel(game);
         game.setGamePanel(gamePanel);
         gamePanel.setLayout(null);
-        gamePanel.setPreferredSize(new Dimension(game.GAME_PANEL_WIDTH, game.GAME_PANEL_HEIGHT));
+        gamePanel.setPreferredSize(new Dimension(Game.GAME_PANEL_WIDTH, Game.GAME_PANEL_HEIGHT));
 
-        startRestart.setBounds((game.GAME_PANEL_WIDTH - START_RESTART_BTN_WIDTH) / 2,
-                (game.GAME_PANEL_HEIGHT - START_RESTART_BTN_HEIGHT) / 2,
+        startRestart.setBounds((Game.GAME_PANEL_WIDTH - START_RESTART_BTN_WIDTH) / 2,
+                (Game.GAME_PANEL_HEIGHT - START_RESTART_BTN_HEIGHT) / 2,
                 START_RESTART_BTN_WIDTH,
                 START_RESTART_BTN_HEIGHT);
         gamePanel.add(startRestart);

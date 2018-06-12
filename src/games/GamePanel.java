@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class GamePanel extends JPanel {
 
-    private Game game;
+    private final Game game;
 
     public GamePanel(Game game) {
         this.game = game;
