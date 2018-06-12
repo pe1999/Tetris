@@ -1,5 +1,6 @@
 package games.tetris;
 
+import games.Game;
 import games.GamePanel;
 
 import javax.swing.*;
@@ -9,16 +10,19 @@ import java.awt.event.ActionListener;
 
 public class Main extends JFrame implements ActionListener {
 
+    private static final String GAME_TITLE = "Tetris";
+
     private static final int POS_X = 600;
     private static final int POS_Y = 200;
-    private static final int WINDOW_WIDTH = 200;
-    private static final int WINDOW_HEIGHT = 400;
-    private final JButton startAndRestart;
+
+    private final JButton startRestart;
+    private static final int START_RESTART_BTN_WIDTH = 100;
+    private static final int START_RESTART_BTN_HEIGHT = 50;
 
     private boolean restartGame = false;
 
-    Tetris tetris;
-    GamePanel gamePanel;
+    private Game game;
+    private GamePanel gamePanel;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -30,51 +34,54 @@ public class Main extends JFrame implements ActionListener {
     }
 
     private Main() {
-        setVisible(true);
         setIconImage(Toolkit.getDefaultToolkit().getImage("games_tetris_10814.png"));//getClass().getResource("games_tetris_10814.png")
-        setLayout(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocation(POS_X, POS_Y);
-        setSize(WINDOW_WIDTH + getInsets().left + getInsets().right, WINDOW_HEIGHT + getInsets().top + getInsets().bottom);
         setResizable(false);
-        setTitle("Tetris");
+        setTitle(GAME_TITLE);
 
-        startAndRestart = new JButton("Start");
-        startAndRestart.addActionListener(this);
-        startAndRestart.setBounds(50, 175, 100, 50);
+        startRestart = new JButton("Start");
+        startRestart.addActionListener(this);
 
         initGame();
+
+        pack();
+        setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        startAndRestart.setVisible(false);
-        startAndRestart.setText("Restart");
-        if(!restartGame) {
+        startRestart.setVisible(false);
+        startRestart.setText("Restart");
+        if (!restartGame) {
             restartGame = true;
-        }
-        else {
+        } else {
             remove(gamePanel);
             initGame();
         }
         gamePanel.requestFocus();
         gamePanel.repaint();
-        tetris.start();
+        game.start();
     }
 
     void showRestartButton() {
-        startAndRestart.setVisible(true);
-        startAndRestart.requestFocus();
+        startRestart.setVisible(true);
+        startRestart.requestFocus();
     }
 
-    void initGame() {
-        tetris = new Tetris(this);
-        gamePanel = new GamePanel(tetris);
-        tetris.setGamePanel(gamePanel);
+    private void initGame() {
+        game = new Tetris(this);
+        gamePanel = new GamePanel(game);
+        game.setGamePanel(gamePanel);
         gamePanel.setLayout(null);
-        gamePanel.setSize(200, 400);
-        gamePanel.setLocation(0, 0);
-        gamePanel.add(startAndRestart);
+        gamePanel.setPreferredSize(new Dimension(game.GAME_PANEL_WIDTH, game.GAME_PANEL_HEIGHT));
+
+        startRestart.setBounds((game.GAME_PANEL_WIDTH - START_RESTART_BTN_WIDTH) / 2,
+                (game.GAME_PANEL_HEIGHT - START_RESTART_BTN_HEIGHT) / 2,
+                START_RESTART_BTN_WIDTH,
+                START_RESTART_BTN_HEIGHT);
+        gamePanel.add(startRestart);
+
         add(gamePanel);
     }
 

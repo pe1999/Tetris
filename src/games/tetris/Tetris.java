@@ -10,21 +10,33 @@ import java.util.Random;
 
 public class Tetris extends Game implements KeyListener {
 
-    Main main;
+    public static final int CELL_SIZE = 20;
+    public static final int GLASS_WIDTH = 10;
+    public static final int GLASS_HEIGHT = 20;
 
-    Glass glass;
-    Brick brick;
+    static {
+        GAME_PANEL_WIDTH = GLASS_WIDTH * CELL_SIZE;
+        GAME_PANEL_HEIGHT = GLASS_HEIGHT * CELL_SIZE;
+    }
 
-    int delay;
-    int currentDelay;
+    public static final int START_DELAY = 1000;
+    public static final int DELAY_STEP = 10;
 
-    private final Random random = new Random();
 
+    private Main main;
+
+    private Glass glass;
+    private Brick brick;
+
+    private int currentDelay;
+
+    private static final Random random = new Random();
 
     Tetris(Main main) {
         this.main = main;
-        glass = new Glass();
-        brick = new Brick(glass);
+        this.glass = new Glass();
+        this.brick = new Brick(glass);
+        brick.newBrick(random.nextInt(Brick.BRICKS));
     }
 
     @Override
@@ -32,32 +44,33 @@ public class Tetris extends Game implements KeyListener {
 
         int lines;
         int summDelaySpeps = 0;
-        int delayStep = 10;
 
         gameOver = false;
         score = 0;
-        delay = 1000;
+        int delay = START_DELAY;
         currentDelay = delay;
 
         while (true) {
             do {
                 try {
-                    sleep(delayStep);
+                    sleep(DELAY_STEP);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    new RuntimeException(e);
+                    //e.printStackTrace();
                 }
-                summDelaySpeps += delayStep;
+                summDelaySpeps += DELAY_STEP;
             } while(summDelaySpeps < currentDelay);
             summDelaySpeps = 0;
             if(!brick.moveDown()) {
                 brick.putToGlass();
                 lines = glass.checkAndDelLines();
                 score += ((lines + 1) * 2 - 2) * 100;
-                delay -= 10;
+                if(lines != 0) delay *= 0.98;
                 currentDelay = delay;
-//                main.setTitle("Tetris. Score = " + score);
-                if(!brick.newBrick(random.nextInt(7))) {
+                if(!brick.newBrick(random.nextInt(Brick.BRICKS))) {
                     gameOver = true;
+                    if(highScore < score)
+                        highScore = score;
                     break;
                 }
             }
@@ -77,7 +90,8 @@ public class Tetris extends Game implements KeyListener {
     public void onDrawComponent(GamePanel gamePanel, Graphics g) {
         gamePanel.setBackground(new Color(0));
         glass.render(gamePanel, g);
-        if(main.isRestartGame()) brick.render(gamePanel, g);
+        if(main.isRestartGame())
+            brick.render(gamePanel, g);
         if(gameOver) {
             g.setColor(Color.RED);
             g.drawString("Game over", 10, 150);
@@ -90,8 +104,7 @@ public class Tetris extends Game implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        switch (keyCode) {
+        switch (e.getKeyCode()) {
             case KeyEvent.VK_LEFT:
                 brick.moveLeft();
                 break;

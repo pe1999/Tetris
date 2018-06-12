@@ -1,5 +1,5 @@
 package games.tetris;
 
-public class Square {
+public class Cell {
 
 }
