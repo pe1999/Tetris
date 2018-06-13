@@ -19,7 +19,7 @@ class Main extends JFrame implements ActionListener {
     private static final int START_RESTART_BTN_WIDTH = 100;
     private static final int START_RESTART_BTN_HEIGHT = 50;
     private static final String START_RESTART_BTN_START_LABEL = "Start";
-    private static final String START_RESTART_BTN_RESTART_LABEL = "Retart";
+    private static final String START_RESTART_BTN_RESTART_LABEL = "Restart";
 
     private boolean restartGame = false;
 

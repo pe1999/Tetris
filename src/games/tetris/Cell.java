@@ -1,8 +1,5 @@
 package games.tetris;
 
-import games.GamePanel;
-import games.Sprite;
-
 import java.awt.*;
 
 class Cell {

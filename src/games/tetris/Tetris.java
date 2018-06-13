@@ -30,7 +30,7 @@ public class Tetris extends Game implements KeyListener {
     private static final int DROP_DELAY = 30;
     private static final int DELAY_STEP = 10;
 
-    private static final boolean SHOW_NEXT_BRICK = false;
+    private static final boolean SHOW_NEXT_BRICK = true;
 
     private Main main;
 
