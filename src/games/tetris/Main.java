@@ -36,7 +36,8 @@ class Main extends JFrame implements ActionListener {
     }
 
     private Main() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage("games_tetris_10814.png"));//getClass().getResource("games_tetris_10814.png")
+        //setIconImage(Toolkit.getDefaultToolkit().getImage("games_tetris_10814.png"));//getClass().getResource("games_tetris_10814.png")
+        setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/resources/games_tetris_10814.png")));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocation(POS_X, POS_Y);
         setResizable(false);
