@@ -6,6 +6,7 @@ public class Game extends Thread {
 
     protected GamePanel gamePanel;
     protected boolean gameOver;
+    protected boolean gamePaused;
     protected int score;
     protected static int highScore;
 

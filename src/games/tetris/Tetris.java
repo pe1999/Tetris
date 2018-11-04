@@ -57,6 +57,7 @@ public class Tetris extends Game implements KeyListener {
         int summDelaySteps = 0;
 
         gameOver = false;
+        gamePaused = false;
         score = 0;
         int delay = START_DELAY;
         currentDelay = delay;
@@ -69,7 +70,7 @@ public class Tetris extends Game implements KeyListener {
                     throw new RuntimeException(e);
                     //e.printStackTrace();
                 }
-                summDelaySteps += DELAY_STEP;
+                if(!gamePaused) summDelaySteps += DELAY_STEP;
             } while(summDelaySteps < currentDelay);
             summDelaySteps = 0;
             if(!brick.moveDown()) {
@@ -101,7 +102,7 @@ public class Tetris extends Game implements KeyListener {
     @Override
     public void onDrawComponent(GamePanel gamePanel, Graphics g) {
         gamePanel.setBackground(BACKGROUND_COLOR);
-        glass.render(gamePanel, g);
+        if(!gamePaused) glass.render(gamePanel, g);
         if(main.isRestartGame()) {
             brick.render(gamePanel, g);
             if(SHOW_NEXT_BRICK) brick.renderNext(gamePanel, g, nextBrick);
@@ -113,6 +114,11 @@ public class Tetris extends Game implements KeyListener {
             g.drawString("Highscore: " + highScore, 2, 24);
             g.drawString("Game over", 10, 150);
         }
+        if(gamePaused) {
+            g.setColor(TETRIS_COLOR);
+            g.drawString("Highscore: " + highScore, 2, 24);
+            g.drawString("Game paused", 10, 150);
+        }
     }
 
     @Override
@@ -121,6 +127,7 @@ public class Tetris extends Game implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        gamePaused = false;
         switch (e.getKeyCode()) {
             case KeyEvent.VK_LEFT:
                 brick.moveLeft();
@@ -136,6 +143,9 @@ public class Tetris extends Game implements KeyListener {
                 break;
             case KeyEvent.VK_SPACE:
                 currentDelay = DROP_DELAY;
+                break;
+            case KeyEvent.VK_P:
+                gamePaused = true;
                 break;
         }
         gamePanel.repaint();
