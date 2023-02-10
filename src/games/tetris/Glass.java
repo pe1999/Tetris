@@ -48,8 +48,8 @@ public class Glass extends Sprite {
 
     private void deleteLine(int line) {
         for(int i = line; i > 0; i--)
-            System.arraycopy(glass[i - 1], 0, glass[i], 0, 10);
-        for(int j = 0; j < 10; j++)
+            System.arraycopy(glass[i - 1], 0, glass[i], 0, Tetris.GLASS_WIDTH);
+        for(int j = 0; j < Tetris.GLASS_WIDTH; j++)
             glass[0][j] = 0;
     }
 }

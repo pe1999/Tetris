@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class Tetris extends Game implements KeyListener {
 
-    static final int CELL_SIZE = 20;
+    static final int CELL_SIZE = 30;
     static final int CELL_BORDER_SIZE = 1;
     static final int GLASS_WIDTH = 10;
     static final int GLASS_HEIGHT = 20;
